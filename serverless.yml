@@ -1,0 +1,27 @@
+service: lambda-go
+provider:
+  name: aws
+  runtime: go1.x
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - s3:*
+      Resource: "arn:aws:s3:::*"
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+functions:
+  list-memes:
+    handler: bin/list-memes
+    events:
+      - http:
+          path: /list
+          method: get
+  generate-file:
+    handler: bin/generate-file
+    events:
+      - http:
+          path: /generate
+          method: get
