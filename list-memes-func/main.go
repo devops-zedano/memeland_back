@@ -79,7 +79,13 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 		return events.APIGatewayProxyResponse{}, err
 	}
 
-	return events.APIGatewayProxyResponse{Body: string(objectsJSON), StatusCode: 200}, nil
+	return events.APIGatewayProxyResponse{
+		Body:       string(objectsJSON),
+		StatusCode: 200,
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin": "*",
+		},
+	}, nil
 }
 
 func getJSONMetadata(fileKey string, downloader *s3manager.Downloader) (model.Metadata, error) {

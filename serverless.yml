@@ -19,9 +19,11 @@ functions:
       - http:
           path: /list
           method: get
+          cors: true
   generate-file-func:
     handler: bin/generate-file-func
     events:
       - http:
           path: /generate
           method: get
+          cors: true
