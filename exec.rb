@@ -1,58 +1,64 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # This is the main task and will be executed.
 def main
-    action = ARGV[0]
-    resource = ARGV[1]
+  action = ARGV[0]
+  resource = ARGV[1]
 
-    exec_task action, resource
+  exec_task action, resource
 end
-
 
 # This is the entry point for the actions on a resource.
 def exec_task(action = nil, resource = nil)
-    if action == nil
-        puts 'Falling back to DEFAULT action...'
-        default_action
+  if action.nil?
+    puts 'Falling back to DEFAULT action...'
+    default_action
+  end
+
+  case action
+  when 'b', 'build'
+    if !resource.nil?
+      build_function_action resource
+    else
+      default_action if resource.nil?
     end
-
-
+  when 'remove', 'r'
+    remove_action
+  end
 end
 
 # This is what is going to be a default action
 def default_action
-    build_all
+  build_all
 end
 
 def build_all
-    puts 'Executing action build_all...'
+  puts 'Executing action "build_all"...'
 
-    system('
-    set -e
+  system('
+    . ./functions.sh
+    build_all
+    deploy_all
+  ')
+end
 
-    cwd=$(pwd)
-    mkdir -p "$cwd/bin"
+def build_function_action(func_name)
+  puts 'Executing action "build_function"...'
 
-    for a_func in $(ls -d */ | grep -v bin); do
-        cd $a_func
-        echo "Building \\"$a_func\\"..."
-        go build -o "${cwd}/bin"
-        cd "$cwd"
-    done
+  sanitized_func_name = func_name.gsub('/', '')
+  system("
+        . ./functions.sh
+        build_func '#{sanitized_func_name}' \"$(pwd)\"
+        deploy_func '#{sanitized_func_name}'
+  ")
+end
 
-    cd $cwd
-    ')
-
-    exit_code = $?
-    if exit_code != 0
-        puts "Error building the functions! Output is #{exit_code}"
-        exit exit_code
-    end
-
-    puts 'The functions have been built...'
-
-    puts 'Deploying the functions...'
-    system('serverless deploy; rm -rf bin/*')
+def remove_action
+  system('
+    . ./functions.sh
+    remove
+  ')
 end
 
 main

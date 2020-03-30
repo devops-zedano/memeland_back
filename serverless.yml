@@ -13,14 +13,14 @@ package:
  include:
    - ./bin/**
 functions:
-  list-memes:
-    handler: bin/list-memes
+  list-memes-func:
+    handler: bin/list-memes-func
     events:
       - http:
           path: /list
           method: get
-  generate-file:
-    handler: bin/generate-file
+  generate-file-func:
+    handler: bin/generate-file-func
     events:
       - http:
           path: /generate
