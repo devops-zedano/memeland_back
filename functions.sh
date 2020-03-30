@@ -30,6 +30,7 @@ build_all() {
 deploy_all() {
     echo 'Deploying the whole application...'
     serverless deploy
+    rm -rf bin/*
 }
 
 remove() {

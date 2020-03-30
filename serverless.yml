@@ -27,3 +27,10 @@ functions:
           path: /generate
           method: get
           cors: true
+  gen-upload-presigned-url-func:
+    handler: bin/gen-upload-presigned-url-func
+    events:
+      - http:
+          path: /generate-presigned-url
+          method: get
+          cors: true
