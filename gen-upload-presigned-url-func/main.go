@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -23,7 +22,7 @@ type response struct {
 	ImageURL string `json:"imageUrl"`
 }
 
-func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func handleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	bucket := "a-memeland"
 	shortUUID := shortuuid.New()
 	imageName := fmt.Sprintf("public/memes/%s/%s", shortUUID, request.QueryStringParameters["filename"])

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"memeland/model"
@@ -23,7 +22,7 @@ type response struct {
 	Description string `json:"description"`
 }
 
-func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func handleRequest() (events.APIGatewayProxyResponse, error) {
 	var objects []response
 	var objectsJSON []byte
 	bucket = "a-memeland"

@@ -1,4 +1,4 @@
-service: lambda-go
+service: memeland
 provider:
   name: aws
   runtime: go1.x
@@ -19,18 +19,16 @@ functions:
       - http:
           path: /list
           method: get
-          cors: true
-  generate-file-func:
-    handler: bin/generate-file-func
-    events:
-      - http:
-          path: /generate
-          method: get
-          cors: true
   gen-upload-presigned-url-func:
     handler: bin/gen-upload-presigned-url-func
     events:
       - http:
           path: /generate-presigned-url
           method: get
+  delete-meme-func:
+    handler: bin/delete-meme-func
+    events:
+      - http:
+          path: /delete
+          method: delete
           cors: true
